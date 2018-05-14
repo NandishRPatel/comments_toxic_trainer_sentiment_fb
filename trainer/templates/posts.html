@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+<h2> Posts </h2>
+<ul>
+{% for post in posts %}
+<li>{{ post.message }}</li>
+<a href=" {% url 'post' profile post.id %}">Open</a>
+{% endfor %}
+</ul>
+
+<a href="#"> Next </a>
+
+</body>
+</html>

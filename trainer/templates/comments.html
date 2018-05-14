@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments</title>
+</head>
+<body>
+
+<h2> Comments </h2>
+<ul>
+{% for comment in comments %}
+    <li>
+         {% if comment.measure < 0 %}
+            {% if comment.measure < -0.8 %}
+                <span style="color:#FF0000";>
+            {% elif comment.measure < -0.6 %}
+                <span style="color:#FF1B1B";>
+            {% elif comment.measure < -0.4 %}
+                <span style="color:#FF3939";>
+            {% elif comment.measure < -0.2 %}
+                <span style="color:#FF5757";>
+            {% else %}
+                <span style="color:#FF8484";>
+            {% endif %}
+
+         {% else %}
+            {% if comment.measure > 0.8 %}
+                <span style="color:#006400";>
+            {% elif comment.measure > 0.6 %}
+                <span style="color:#008000";>
+            {% elif comment.measure > 0.4 %}
+                <span style="color:#228B22";>
+            {% elif comment.measure > 0.2 %}
+                <span style="color:#32CD32";>
+            {% else %}
+                <span style="color:#00FF00";>
+            {% endif %}
+         {% endif %}
+            {{ comment.message }}</span>
+        <br>
+        <span>{{ comment.from }}</span>
+        <form onsubmit='save_comment( "{{ comment.message }}", "{{ comment.from }}", "{{ comment.created_time }}", 1)'>
+            <input type="submit" value="Toxic"/>
+        </form>
+    </li>
+{% endfor %}
+</ul>
+
+<a href="#"> Next </a>
+
+</body>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script>
+    save_comment = function(comment_text, comment_user_id, comment_time, toxicity){
+        var profile_id = "{{ profile }}";
+        var post_id = "{{ post_id }}";
+        var comment_text = comment_text;
+        var comment_user_id = comment_user_id;
+        var comment_time = comment_time;
+        var toxicity = toxicity;
+
+        $.ajax({
+            url: '/ajax/save_comment/',
+            data: {
+                'profile_id': profile_id,
+                'post_id': post_id,
+                'comment_user_id': comment_user_id,
+                'comment_text':comment_text,
+                'comment_time': comment_time,
+                'toxicity': toxicity
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert(data.message);
+            }
+        });
+
+}
+
+</script>
+
+</html>
